@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Brinquedos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Menu</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Controle</a></li>
+                <li><a href="relatorios.html">Relatórios</a></li>
+                <li><a href="#">Histórico</a></li>
+                <li><a href="#">Funcionários</a></li>
+                <li><a href="#">Configurações</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+        <header>
+            <h1>Controle de Brinquedos</h1>
+        </header>
+
+        <main>
+            <!-- Formulário -->
+            <section class="form-section">
+                <h2>Cadastrar Criança</h2>
+                <form id="cadastroForm">
+                    <!-- Dados da criança -->
+                    <input type="text" id="nome" placeholder="Nome da criança" required>
+                    <input type="number" id="idade" placeholder="Idade" min="1" max="12" required>
+                    <input type="tel" id="telefone" placeholder="Telefone do responsável" required>
+
+                    <!-- Pergunta sobre os pais -->
+                    <label for="responsavelPais">O responsável são os pais?</label>
+                    <select id="responsavelPais" required>
+                        <option value="">Selecione</option>
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                    </select>
+
+                    <!-- Se SIM -->
+                    <div id="campoPais" style="display:none;">
+                        <input type="text" id="nomePais" placeholder="Nome completo do responsável">
+                    </div>
+
+                    <!-- Se NÃO -->
+                    <div id="campoOutroResponsavel" style="display:none;">
+                        <input type="text" id="nomeOutroResponsavel" placeholder="Nome de quem deixou a criança">
+                        <input type="text" id="parentesco" placeholder="Parentesco (Ex.: Avô, Tia)">
+                    </div>
+
+                    <!-- Quem busca -->
+                    <label for="buscarResponsavel">Quem vai buscar a criança será o responsável?</label>
+                    <select id="buscarResponsavel" required>
+                        <option value="">Selecione</option>
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                    </select>
+
+                    <!-- Nome de quem busca (se for diferente) -->
+                    <div id="campoQuemBusca" style="display:none;">
+                        <input type="text" id="nomeBusca" placeholder="Nome completo de quem buscará">
+                    </div>
+
+                    <!-- Campo de tempo separado -->
+                    <label for="horas">Tempo de permanência:</label>
+                    <div class="tempo-container">
+                        <input type="number" id="horas" placeholder="Horas" min="0" max="12" style="width: 70px;">
+                        <span>:</span>
+                        <input type="number" id="minutos" placeholder="Minutos" min="0" max="59" style="width: 70px;">
+                    </div>
+
+                    <button type="submit">Adicionar</button>
+                </form>
+            </section>
+
+            <!-- Lista -->
+            <section class="lista-section">
+                <h2>Crianças no Brinquedo</h2>
+                <div id="listaCriancas"></div>
+                <h1>Relatório de Entradas</h1>
+                <table id="tabelaRelatorio">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tempo Contratado</th>
+                        <th>Status</th>
+                        <th>Entrada</th>
+                    </tr>
+                    </thead>
+                    <tbody id="corpoTabela">
+                    <!-- Dados serão inseridos aqui -->
+                    </tbody>
+                </table>
+
+                <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js"></script>
+                <script src="/js/firebase.js"></script>
+                <script>
+                    const tabela = document.getElementById("corpoTabela");
+
+                    firebase.database().ref("criancas").on("value", (snapshot) => {
+                    tabela.innerHTML = "";
+                    snapshot.forEach((childSnapshot) => {
+                        const dados = childSnapshot.val();
+                        const tr = document.createElement("tr");
+
+                        tr.innerHTML = `
+                        <td>${dados.nome}</td>
+                        <td>${dados.tempo}</td>
+                        <td>${dados.status}</td>
+                        <td>${new Date(dados.entrada).toLocaleString("pt-BR")}</td>
+                        `;
+
+                        tabela.appendChild(tr);
+                    });
+                    });
+                </script>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2025 - Sistema Controle Kids</p>
+        </footer>
+    </div>
+
+    <!-- Firebase SDKs (coloque ANTES dos seus scripts) 
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script> -->
+
+    <script type="module" src="/js/firebase.js"></script>
+    <script type="module" src="/public/app-relatorio.js"></script>
+
+    <!-- Firebase config -->
+    <script src="./firebase/firebase-config.js"></script>
+
+    <!-- App JS -->
+    <script src="app.js"></script>
+</body>
+</html>

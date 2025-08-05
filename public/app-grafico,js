@@ -1,0 +1,87 @@
+import { app } from '../firebase.js'; // ajuste o caminho conforme a estrutura do seu projeto
+
+document.addEventListener('DOMContentLoaded', () => {
+  const periodoSelect = document.getElementById('periodoGrafico');
+  if (periodoSelect) {
+    periodoSelect.addEventListener('change', atualizarGrafico);
+    atualizarGrafico(); // Render inicial
+  }
+});
+
+let graficoInstance = null;
+
+async function atualizarGrafico() {
+  const periodoMeses = parseInt(document.getElementById('periodoGrafico').value);
+  const hoje = new Date();
+  const dataInicial = new Date();
+  dataInicial.setMonth(dataInicial.getMonth() - periodoMeses);
+
+  try {
+    const db = firebase.firestore();
+    const snapshot = await db.collection('criancas').get();
+
+    const contagemPorDia = {};
+
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      if (d.inicio) {
+        const data = new Date(d.inicio);
+        if (data >= dataInicial && data <= hoje) {
+          const dataFormatada = data.toISOString().split('T')[0];
+          contagemPorDia[dataFormatada] = (contagemPorDia[dataFormatada] || 0) + 1;
+        }
+      }
+    });
+
+    const labels = Object.keys(contagemPorDia).sort();
+    const dados = labels.map(data => contagemPorDia[data]);
+
+    renderizarGrafico(labels, dados);
+  } catch (err) {
+    console.error("Erro ao carregar dados do gráfico:", err);
+  }
+}
+
+function renderizarGrafico(labels, dados) {
+  const ctx = document.getElementById('graficoCriancas').getContext('2d');
+
+  if (graficoInstance) {
+    graficoInstance.destroy();
+  }
+
+  graficoInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Crianças por Dia',
+        data: dados,
+        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Data'
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Quantidade de Crianças'
+          },
+          ticks: {
+            precision: 0
+          }
+        }
+      }
+    }
+  });
+}

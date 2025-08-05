@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Controle Kids</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- jsPDF + AutoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Menu</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">Controle</a></li>
+                <li><a href="relatorios.html" class="active">Relatórios</a></li>
+                <li><a href="#">Histórico</a></li>
+                <li><a href="#">Funcionários</a></li>
+                <li><a href="#">Configurações</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+        <header>
+            <h1>Relatórios de Entradas</h1>
+        </header>
+
+        <main>
+            <section class="form-section">
+                <h2>Filtros</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="date" id="dataFiltro" placeholder="Data">
+                    <input type="text" id="nomeFiltro" placeholder="Nome da criança">
+                    <input type="text" id="responsavelFiltro" placeholder="Nome do responsável">
+                    <button onclick="buscarRelatorio()">Buscar</button>
+                    <button id="clearFilters" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Limpar Filtros</button>
+                    <button onclick="exportarPDF()">Exportar PDF</button>
+                </div>
+            </section>
+
+
+            <section class="lista-section">
+                <h2>Resultado</h2>
+                <table id="tabelaRelatorio" border="1" style="width:100%; text-align:center; border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Idade</th>
+                            <th>Responsável</th>
+                            <th>Telefone</th>
+                            <th>Quem Busca</th>
+                            <th>Entrada</th>
+                            <th>Duração</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="7">Nenhum dado encontrado</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="grafico" style="margin-top: 40px;">
+                <h2 class="text-xl font-bold mb-4">Gráfico de Crianças por Dia</h2>
+
+                <label for="periodoGrafico" class="block mb-2">Selecione o período:</label>
+                <select id="periodoGrafico" class="mb-4 p-2 border rounded">
+                    <option value="1">Último mês</option>
+                    <option value="3">Últimos 3 meses</option>
+                    <option value="6">Últimos 6 meses</option>
+                    <option value="12">Último(s) ano(s)</option>
+                </select>
+
+                <canvas id="graficoCriancas" width="400" height="200"></canvas>
+            </section>
+        </main>
+
+
+        <footer>
+            <p>© 2025 - Sistema Controle Kids</p>
+        </footer>
+    </div>
+    <!-- Firebase SDKs (apenas compatível com o firebase-config.js) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <script type="module" src="/js/firebase.js"></script>
+    <script type="module" src="/public/app-relatorio.js"></script>
+
+    <!-- Firebase config -->
+    <script src="./firebase/firebase-config.js"></script>
+
+    <script src="app-relatorio.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app-grafico.js"></script>
+
+</body>
+</html>

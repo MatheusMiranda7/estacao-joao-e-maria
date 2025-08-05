@@ -1,0 +1,251 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #fce4ec;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #f06292;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin: 15px 0;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #ec407a;
+}
+
+/* Conteúdo principal */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #f48fb1;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.5rem;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-section,
+.lista-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #ec407a;
+}
+
+/* Formulário */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+input,
+select,
+button {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    color: #555;
+    width: 100%;
+}
+
+/* Campos dinâmicos */
+#campoPais,
+#campoOutroResponsavel,
+#campoQuemBusca {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#campoPais input,
+#campoOutroResponsavel input,
+#campoQuemBusca input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+/* Tempo */
+.tempo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Botão padrão */
+button {
+    background: #ec407a;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #d81b60;
+}
+
+/* Botão Finalizar */
+.finalizar {
+    padding: 10px 15px;
+    background: linear-gradient(90deg, #ec407a, #f48fb1, #f06292);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    background-size: 300% 300%;
+}
+
+.finalizar:hover {
+    animation: rainbow 2s linear infinite;
+    transform: scale(1.05);
+}
+
+@keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Efeito brilho ao clicar */
+.brilho {
+    animation: brilho 1.5s ease-in-out;
+}
+
+@keyframes brilho {
+    0% { box-shadow: 0 0 5px #fff, 0 0 10px #ff69b4; }
+    50% { box-shadow: 0 0 20px #fff, 0 0 30px #ec407a; }
+    100% { box-shadow: 0 0 5px #fff, 0 0 10px #ff69b4; }
+}
+
+/* Lista de crianças */
+#listaCriancas {
+    display: grid;
+    gap: 15px;
+}
+
+.card {
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid #ec407a;
+}
+
+.timer {
+    font-weight: bold;
+    color: #ff4500;
+}
+
+/* Nome e timer piscando */
+.blink {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Footer com arco-íris */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    color: white;
+    font-weight: bold;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    .card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
